@@ -7,8 +7,18 @@ def copy_assets(*args, **kwargs):
     build_dir = env.subst("$BUILD_DIR")
     project_dir = env.subst("$PROJECT_DIR")
     
-    for asset in ["bgm.mp3", "cat.png"]:
-        src = os.path.join(project_dir, "src", asset)
+    # Assets to copy
+    assets = ["bgm.mp3", "cat.png"]
+    src_dir = os.path.join(project_dir, "src")
+    
+    # Add all .json files from src
+    if os.path.exists(src_dir):
+        for f in os.listdir(src_dir):
+            if f.endswith(".json"):
+                assets.append(f)
+
+    for asset in assets:
+        src = os.path.join(src_dir, asset)
         dst = os.path.join(build_dir, asset)
         if os.path.exists(src):
             try:
